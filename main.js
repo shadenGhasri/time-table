@@ -1,34 +1,15 @@
 const draggable_list = document.getElementById("draggable-list");
 const check = document.getElementById("check");
 
-const movieName = [
+const richestPeople = [
   {name:"Casablanca",duration:2},
   {name:"The Shawshank Redemption",duration:1},
   {name:"The Godfather",duration:3},
 ];
 
+
 // Store listitems
 const listItems = [];
-
- function setTime (e){
-  let count = 0;
-
-  if(e === 0){
-    count = 1
-  }
-  if(e === 1){
-    const time = document.getElementById("draggable-list").children[0].children[1].children[1].textContent
-    const duration =  document.getElementById("draggable-list").children[0].children[0].textContent
-    count = parseInt(time) + parseInt(duration)
-  }
-  if(e === 2){
-    const time = document.getElementById("draggable-list").children[1].children[1].children[1].textContent
-    const duration = document.getElementById("draggable-list").children[1].children[0].textContent
-    count =  parseInt(time) + parseInt(duration)
-  }
-  return count 
-
-}
 
 
 
@@ -40,7 +21,7 @@ createList();
 function createList() {
 
 
-  [...movieName]
+  [...richestPeople]
     .map((a) => ({ value: a.name, sort: Math.random() , time : a.duration}))
     .sort((a, b) => a.sort - b.sort)
     .map((a) => ({name :a.value , duration : a.time }))
@@ -48,13 +29,14 @@ function createList() {
       
       const listItem = document.createElement("li");
       listItem.setAttribute("data-index", index);
+      listItem.classList.add("liItem")
       let getLi = listItem.getAttribute("data-index")
      
 
-      const get = setTime(getLi)
+      // const get = setTime(getLi)
 
       listItem.innerHTML = `
-        <span class="number">${get}</span>
+      <span class="number">${index +1}</span>
         <div class="draggable" draggable="true">
           <p class="person-name">${person.name}</p>
           <span>${person.duration}</span>
@@ -76,12 +58,31 @@ function dragStart() {
 }
 
 function dragEnter() {
-  // console.log('Event: ', 'dragenter');
   this.classList.add("over");
 }
 
 function dragLeave() {
   this.classList.remove("over");
+//  const number = document.querySelectorAll(".number")
+//  console.log(number)
+const time1 = document.getElementById("draggable-list").children[0].children[1].children[1].innerText
+const duration1 =  document.getElementById("draggable-list").children[0].children[0].textContent
+const sum1 = parseInt(time1) + parseInt(duration1);
+
+document.getElementById("draggable-list").children[1].children[0].textContent = sum1
+
+const time2 = document.getElementById("draggable-list").children[1].children[1].children[1].innerText
+const duration2 =  document.getElementById("draggable-list").children[1].children[0].textContent
+const sum2 = parseInt(time2) + parseInt(duration2);
+
+document.getElementById("draggable-list").children[2].children[0].textContent = sum2
+
+
+console.log(time2)
+console.log(duration2)
+
+
+
 
 }
 
@@ -114,7 +115,7 @@ function checkOrder() {
   listItems.forEach((listItem, index) => {
     const personName = listItem.querySelector(".draggable").innerText.trim();
 
-    if (personName !== movieName[index]) {
+    if (personName !== richestPeople[index]) {
       listItem.classList.add("wrong");
     } else {
       listItem.classList.remove("wrong");
@@ -140,9 +141,3 @@ function addEventListeners() {
 }
 
 check.addEventListener("click", checkOrder);
-
-
-
-
-
-
